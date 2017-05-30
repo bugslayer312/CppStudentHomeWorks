@@ -17,9 +17,9 @@ public:
 	void SetValue(float xСoordinate, float yСoordinate, float zСoordinate);
 	void WriteValue();
 	void PrintCoordinate() const;
-	Vector operator+(Vector vector);
-	float Vector::operator*(Vector vector);
-	float FindLengthVector();
-	float FindCosVectors(Vector vector);
-	Vector FindMultipleVectors(Vector vector);
+	Vector operator+(Vector const& vector);
+	float operator*(Vector const& vector);
+	float CalculateLength() const;
+	float CalculateCos(Vector const& vector);
+	Vector CalculateVectorProduct(Vector const& vector);
 };

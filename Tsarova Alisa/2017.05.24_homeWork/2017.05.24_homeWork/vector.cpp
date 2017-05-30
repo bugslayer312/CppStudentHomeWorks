@@ -50,7 +50,7 @@ void Vector::PrintCoordinate() const
 	std::cout << "Z coordinate: " << m_zСoordinate << std::endl;
 }
 
-Vector Vector::operator+(Vector vector)
+Vector Vector::operator+(Vector const& vector)
 {
 	Vector result(*this);
 
@@ -61,21 +61,16 @@ Vector Vector::operator+(Vector vector)
 	return result;
 }
 
-float Vector::FindLengthVector() //| v | = sqrt(x2 + y2 + z2)
+float Vector::CalculateLength() const //| v | = sqrt(x2 + y2 + z2)
 {
 	float lengthVector;
 
 	lengthVector = std::sqrt(m_xСoordinate * m_xСoordinate + m_yСoordinate * m_yСoordinate + m_zСoordinate * m_zСoordinate);
 
-	if (lengthVector < 0)
-	{
-		lengthVector = std::abs(lengthVector);
-	}
-
 	return lengthVector;
 }
 
-float Vector::operator*(Vector vector) //v1*v2 = x1*x2 + y1*y2 + z1*z2
+float Vector::operator*(Vector const& vector) //v1*v2 = x1*x2 + y1*y2 + z1*z2
 {
 	float result;
 	
@@ -83,18 +78,16 @@ float Vector::operator*(Vector vector) //v1*v2 = x1*x2 + y1*y2 + z1*z2
 	return result;
 }
 
-float Vector::FindCosVectors(Vector vector)
+float Vector::CalculateCos(Vector const& vector)
 {
-	Vector vectorA(*this);
-
 	float cosine;
 
-	cosine = vectorA * vector / vectorA.FindLengthVector() * vector.FindLengthVector();
+	cosine = (*this) * vector / (this->CalculateLength() * vector.CalculateLength());
 
 	return cosine;
 }
 
-Vector Vector::FindMultipleVectors(Vector vector)
+Vector Vector::CalculateVectorProduct(Vector const& vector)
 {
 	Vector result;
 
@@ -104,4 +97,3 @@ Vector Vector::FindMultipleVectors(Vector vector)
 
 	return result;
 }
-

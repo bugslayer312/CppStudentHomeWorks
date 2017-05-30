@@ -66,14 +66,14 @@ int main()
 	std::cout << "The scalar product of vectors #1 and #2:" << std::endl;
 	std::cout << vectorScalarResult << std::endl;
 
-	std::cout << "The length of vector #1: " << vector1.FindLengthVector() << std::endl;
-	std::cout << "The length of vector #2: " << vector2.FindLengthVector() << std::endl;
+	std::cout << "The length of vector #1: " << vector1.CalculateLength() << std::endl;
+	std::cout << "The length of vector #2: " << vector2.CalculateLength() << std::endl;
 
-	std::cout << "The cosine of the angle vectors #1 and #2: " << vector1.FindCosVectors(vector2) << std::endl;
+	std::cout << "The cosine of the angle vectors #1 and #2: " << vector1.CalculateCos(vector2) << std::endl;
 
 	Vector multipleVectors;
 
-	multipleVectors = vector1.FindMultipleVectors(vector2);
+	multipleVectors = vector1.CalculateVectorProduct(vector2);
 
 	std::cout << "The vector products of vectors #1 and #2: " << std::endl;
 	multipleVectors.PrintCoordinate();
