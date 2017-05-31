@@ -1,5 +1,8 @@
 #pragma once
 
+#include  <iostream>
+#include <iosfwd>
+
 class Interval
 {
 private:
@@ -10,15 +13,15 @@ public:
 	Interval();
 	Interval(float start, float end);
 	Interval(Interval const& interval);
-	void operator=(Interval const& interval);
-	float CalculateLength();
+	Interval& operator=(Interval const& interval);
+	float CalculateLength() const;
 	void GetInterval();
 	void MoveDist(float move);
 	void Expand(float scale);
-	float CalculateMiddle();
-	bool IsEmpty();
-	Interval operator&(Interval interval);
-	Interval operator|(Interval interval);
+	float CalculateMiddle() const;
+	bool IsEmpty() const;
+	Interval operator&(Interval const& interval);
+	Interval operator|(Interval const& interval);
 	void operator += (float move);
 	void operator *= (float scale);
 	friend std::ostream& operator<<(std::ostream& stream, Interval const& interval);

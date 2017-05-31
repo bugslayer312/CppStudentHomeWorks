@@ -1,6 +1,4 @@
-﻿#include  <iostream>
-#include "Interval.h"
-#include <iosfwd>
+﻿#include "Interval.h"
 
 Interval::Interval() : m_start(0), m_end(0)
 {
@@ -8,11 +6,11 @@ Interval::Interval() : m_start(0), m_end(0)
 
 Interval::Interval(float start, float end) : m_start(start), m_end(end)
 {
-	if (end < start)
+	if (m_end < m_start)
 	{
-		float buff = start;
-		start = end;
-		end = buff;
+		float buff = m_start;
+		m_start = m_end;
+		m_end = buff;
 	}
 }
 
@@ -22,13 +20,19 @@ Interval::Interval(Interval const& interval)
 	m_end = interval.m_end;
 }
 
-void Interval::operator=(Interval const& interval)
+Interval& Interval::operator=(Interval const& interval)
 {
-	m_start = interval.m_start;
-	m_end = interval.m_end;
+	Interval& result = (*this);
+	if (this->m_start == interval.m_start && this->m_end == interval.m_end)
+	{
+		std::cout << "assigning to myself";
+	}
+	this->m_start = interval.m_start;
+	this->m_end = interval.m_end;
+	return (*this);
 }
 
-float Interval::CalculateLength()
+float Interval::CalculateLength() const
 {
 	return (m_end - m_start);
 }
@@ -52,15 +56,15 @@ void Interval::MoveDist(float move)
 
 void Interval::Expand(float scale)
 {
-	m_end *= scale;
+	m_end *= scale * CalculateLength() + m_start;
 }
 
-float Interval::CalculateMiddle()
+float Interval::CalculateMiddle() const
 {
-	return ((m_end - m_start) / 2) + m_start;
+	return (CalculateLength() / 2) + m_start;
 }
 
-bool Interval::IsEmpty()
+bool Interval::IsEmpty() const
 {
 	if (m_start == m_end)
 	{
@@ -69,7 +73,7 @@ bool Interval::IsEmpty()
 	return false;
 }
 
-Interval Interval::operator&(Interval interval)
+Interval Interval::operator&(Interval const& interval)
 {
 	Interval result;
 	if (m_start <= interval.m_start)
@@ -80,7 +84,7 @@ Interval Interval::operator&(Interval interval)
 	{
 		result.m_start = m_start;
 	}
-	if (m_end <= interval.m_end)
+	if (m_end >= interval.m_end)
 	{
 		result.m_end = interval.m_end;
 	}
@@ -94,14 +98,11 @@ Interval Interval::operator&(Interval interval)
 		result.m_start = 0;
 		result.m_end = 0;
 	}
-	else
-	{
-		return result;
-	}
+	
 	return result;
 }
 
-Interval Interval::operator|(Interval interval)
+Interval Interval::operator|(Interval const& interval)
 {
 	Interval result;
 
@@ -113,7 +114,7 @@ Interval Interval::operator|(Interval interval)
 	{
 		result.m_start = interval.m_start;
 	}
-	if (m_end <= interval.m_end)
+	if (m_end >= interval.m_end)
 	{
 		result.m_end = m_end;
 	}
@@ -122,11 +123,7 @@ Interval Interval::operator|(Interval interval)
 		result.m_end = interval.m_end;
 	}
 
-	if ((this->CalculateLength() + interval.CalculateLength()) >= (result.m_end - result.m_start))
-	{
-		return result;
-	}
-	else
+	if (!((this->CalculateLength() + interval.CalculateLength()) >= (result.m_end - result.m_start)))
 	{
 		result.m_start = 0;
 		result.m_end = 0;
@@ -136,12 +133,12 @@ Interval Interval::operator|(Interval interval)
 
 void Interval::operator += (float move)
 {
-	this->MoveDist(move);
+	MoveDist(move);
 }
 
 void Interval::operator *= (float scale)
 {
-	this->Expand(scale);
+	Expand(scale);
 }
 
 std::ostream& operator<<(std::ostream& stream, Interval const& interval)		//ссылка для того, чтобы не копировать а изменить
@@ -154,6 +151,6 @@ std::istream& operator >> (std::istream& stream, Interval const& interval)
 {
 	char buffer[30];
 	stream.getline(buffer, 30 - 1);
-	sscanf(buffer, "%f %f", interval.m_start, interval.m_end);
+	sscanf(buffer, "%f %f", &interval.m_start, &interval.m_end);
 	return stream;
 }
