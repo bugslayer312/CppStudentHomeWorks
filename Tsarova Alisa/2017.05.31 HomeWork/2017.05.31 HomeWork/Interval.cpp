@@ -22,13 +22,11 @@ Interval::Interval(Interval const& interval)
 
 Interval& Interval::operator=(Interval const& interval)
 {
-	Interval& result = (*this);
-	if (this->m_start == interval.m_start && this->m_end == interval.m_end)
+	if (this != &interval)
 	{
-		std::cout << "assigning to myself";
+		m_start = interval.m_start;
+		m_end = interval.m_end;
 	}
-	this->m_start = interval.m_start;
-	this->m_end = interval.m_end;
 	return (*this);
 }
 
