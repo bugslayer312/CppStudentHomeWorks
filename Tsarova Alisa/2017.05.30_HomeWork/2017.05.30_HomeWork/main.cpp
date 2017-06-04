@@ -55,7 +55,7 @@ int main()
 	set1 += 80;
 	set1 -= 80;
 	
-	//set2 = set1;
+	set2 = set1;
 
 	set1 -= 3;
 	set1 += 0;
@@ -106,6 +106,8 @@ int main()
 	b = set2;
 
 	std::cout << b << "\n";
+
+	Set set7(set1);
 
 	return 0;
 }

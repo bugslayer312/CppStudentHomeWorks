@@ -10,19 +10,22 @@ Set::Set():m_capacity(5), m_count(0)
 Set::Set(int element)
 {
 	m_capacity = 5;
-	m_elements = new int[m_capacity];
 	m_count = 0;
+	m_elements = new int[m_capacity];
 	m_elements[m_count] = element;
+	m_count++;
 }
 
-Set::Set(Set const& set) : m_capacity(set.m_capacity), m_elements(set.m_elements), m_count(set.m_count)
+Set::Set(Set const& set) : m_capacity(set.m_capacity), m_count(set.m_count)
 {
+	m_elements = new int[m_capacity];
+	memcpy(m_elements, set.m_elements, m_count * sizeof(int));
 }
 
-/*Set::~Set()
+Set::~Set()
 {
 	delete[] m_elements;
-}*/
+}
 
 void Set::ExpendMemory()
 {
@@ -100,23 +103,16 @@ bool Set::operator==(Set const& set) const
 		int coincidence = 0;
 		for (int i = 0; i < m_count; i++)
 		{
-			if (i == coincidence)
+			if (i == coincidence && set.Contains(m_elements[i]))
 			{
-				for (int j = 0; j < set.m_count; j++)
-				{
-					if (m_elements[i] == set.m_elements[j])
-					{
-						coincidence++;
-						break;
-					}
-				}
+				coincidence++;
 			}
 			else
 			{
 				break;
 			}
 		}
-		return coincidence == m_count ? true : false;
+		return coincidence == m_count;
 	}
 	return false;
 }
@@ -131,7 +127,7 @@ void Set::PrintElements()
 
 bool Set::operator!= (Set const& rhs) const
 {
-	return *this == rhs ? false : true;
+	return !(*this == rhs);
 }
 
 Set operator&(Set const& left, Set const& right)
@@ -139,13 +135,9 @@ Set operator&(Set const& left, Set const& right)
 	Set result;
 	for (int i = 0; i < left.m_count; i++)
 	{
-		for (int j = 0; j < right.m_count; j++)
+		if (right.Contains(left.m_elements[i]))
 		{
-			if (left.m_elements[i] == right.m_elements[j])
-			{
-				result += right.m_elements[j];
-				break;
-			}
+			result += left.m_elements[i];
 		}
 	}
 	return result;
@@ -153,14 +145,11 @@ Set operator&(Set const& left, Set const& right)
 
 Set operator|(Set const& left, Set const& right)
 {
-	Set result;
-	for (int i = 0; i < left.m_count; i++)
+	Set result(left);
+
+	for (int i = 0; i < right.m_count; i++)
 	{
-		result += left.m_elements[i];
-		for (int j = 0; j < right.m_count; j++)
-		{
-			result += right.m_elements[j];
-		}
+		result += right.m_elements[i];
 	}
 
 	return result;
@@ -184,11 +173,7 @@ Set operator^(Set const& left, Set const& right)
 
 Set::operator bool() const
 {
-	if (m_count)
-	{
-		return true;
-	}
-	return false;
+	return m_count > 0;
 }
 
 std::ostream& operator<<(std::ostream& stream, Set const& set)		
@@ -207,9 +192,10 @@ std::istream& operator >> (std::istream& stream, Set& set)
 	stream.getline(buffer, 19);										
 	char* begin = buffer;
 	set += strtol(begin++, &begin, 10);									
-	while (*begin == ' ')
+	do 
 	{
-		set += strtof(++begin, &begin);									
-	}
+		set += strtol(++begin, &begin, 10);									
+	} while (*begin == ' ');
+
 	return stream;
 }

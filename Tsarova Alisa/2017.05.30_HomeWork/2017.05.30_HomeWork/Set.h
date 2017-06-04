@@ -12,7 +12,7 @@ public:
 	Set();
 	Set(int element);
 	Set(Set const& set);
-	//~Set();
+	~Set();
 
 	void ExpendMemory();
 	void operator+=(int element);
