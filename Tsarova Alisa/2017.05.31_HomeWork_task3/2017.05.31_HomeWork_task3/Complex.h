@@ -15,6 +15,8 @@ public:
 	Complex(Complex const& complex);
 	Complex& operator=(Complex const& complex);
 	float GetRe() const;
+	float GetIm() const;
+	void Set(float re, float im);
 	float CalculateModule() const;
 	Complex operator+(Complex const& complex);
 	Complex operator-(Complex const& complex);

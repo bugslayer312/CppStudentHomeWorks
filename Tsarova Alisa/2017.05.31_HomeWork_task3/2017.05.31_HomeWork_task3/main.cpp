@@ -15,5 +15,12 @@ int main()
 	Complex c4;
 
 	std::cin >> c4;
+
+	Complex c5;
+
+	c5.Set(5.3, -5.3);
+
+	std::cout << c5;
+
 	return 0;
 }
