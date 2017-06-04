@@ -10,7 +10,7 @@ Stack::Stack(Stack const& stack)
 	m_count = stack.m_count;
 	m_capacity = stack.m_capacity;
 	m_array = new int[m_capacity];
-	memcpy(m_array, stack.m_array, m_count);
+	memcpy(m_array, stack.m_array, m_count * sizeof(int));
 }
 
 Stack::~Stack()
@@ -84,12 +84,6 @@ Stack& Stack::operator << (int element)
 
 Stack& Stack::operator >> (int& element)
 {
-	for (int i = 0; i < m_count; i++)
-	{
-		if (m_array[i] == element)
-		{
-			Pop();
-		}
-	}
+	element = Pop();
 	return *this;
 }
