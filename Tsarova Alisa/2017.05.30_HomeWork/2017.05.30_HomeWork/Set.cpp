@@ -44,8 +44,7 @@ void Set:: operator+=(int element)
 		{
 			ExpendMemory();
 		}
-		m_elements[m_count] = element;
-		m_count++;
+		m_elements[m_count++] = element;
 	}
 }
 
@@ -100,19 +99,14 @@ bool Set::operator==(Set const& set) const
 {
 	if (m_count == set.m_count)
 	{
-		int coincidence = 0;
 		for (int i = 0; i < m_count; i++)
 		{
-			if (i == coincidence && set.Contains(m_elements[i]))
+			if (!set.Contains(m_elements[i]))
 			{
-				coincidence++;
-			}
-			else
-			{
-				break;
+				return false;
 			}
 		}
-		return coincidence == m_count;
+		return true;
 	}
 	return false;
 }
