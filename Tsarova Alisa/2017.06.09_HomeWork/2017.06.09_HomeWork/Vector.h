@@ -21,7 +21,10 @@ public:
 	T& operator[](int index);
 
 	template<class T1>
-	Vector<T1, N> operator*(T1 number);
+	Vector<T, N> operator*(T1 number);
+
+	template <int N1>
+	T& MultipliedByVector(Vector<T, N1> const& vector);
 };
 
 template <class T, int N>
@@ -80,12 +83,31 @@ T& Vector<T, N>::operator[](int index)
 
 template <class T, int N>
 template<class T1>
-Vector<T1, N> Vector<T, N>::operator*(T1 number)
+Vector<T, N> Vector<T, N>::operator*(T1 number)
 {
-	Vector<T, N1> result(*this);
-	for (int i = 0, i < N, i++)
+	Vector<T, N> result(*this);
+	for (int i = 0; i < N; i++)
 	{
 		result.m_coordinate[i] *= number;
+	}
+	return result;
+}
+
+template <class T, int N>
+template <int N1>
+T& Vector<T, N>::MultipliedByVector(Vector<T, N1> const& vector)
+{
+	T result = 0;
+	if (N == N1)
+	{
+		for (int i = 0; i < N; i++)
+		{
+			result += m_coordinate[i] * vector.m_coordinate[i];
+		}
+	}
+	else
+	{
+		std::cout << "The different sizes!\n";
 	}
 	return result;
 }
