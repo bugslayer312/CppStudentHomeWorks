@@ -4,11 +4,10 @@
 
 int main()
 {
-	Vector <float, 3> vector1;
-	Vector <float, 4> vector2(vector1);
-	Vector <float, 3> vector3 = {1.3F, 1.5F, 6.2F};
+	Vector <int, 3> vector1;
+	Vector <int, 4> vector2(vector1);
+	Vector <int, 3> vector3 = {1, 2, 6};
 
-	float a = 3;
 	vector1 = vector3 * 56;
 	
 	std::cout << vector1[1] << std::endl;

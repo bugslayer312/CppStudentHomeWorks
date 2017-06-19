@@ -8,7 +8,7 @@ class Vector
 public:
 	T m_coordinate[N];
 
-	Vector();
+	Vector() = default;
 
 	template <int N1>
 	Vector(Vector<T, N1> const& vector);
@@ -23,15 +23,8 @@ public:
 	template<class T1>
 	Vector<T, N> operator*(T1 number);
 
-	template <int N1>
-	T& MultipliedByVector(Vector<T, N1> const& vector);
+	T operator*(Vector<T, N> const& vector);
 };
-
-template <class T, int N>
-Vector<T, N>::Vector() 
-{
-	memset(m_coordinate, 0, sizeof(m_coordinate));
-}
 
 template <class T, int N>
 template <int N1>
@@ -94,20 +87,13 @@ Vector<T, N> Vector<T, N>::operator*(T1 number)
 }
 
 template <class T, int N>
-template <int N1>
-T& Vector<T, N>::MultipliedByVector(Vector<T, N1> const& vector)
+T Vector<T, N>::operator*(Vector<T, N> const& vector)
 {
 	T result = 0;
-	if (N == N1)
+	for (int i = 0; i < N; i++)
 	{
-		for (int i = 0; i < N; i++)
-		{
-			result += m_coordinate[i] * vector.m_coordinate[i];
-		}
+		result += m_coordinate[i] * vector.m_coordinate[i];
 	}
-	else
-	{
-		std::cout << "The different sizes!\n";
-	}
+
 	return result;
 }
