@@ -10,8 +10,17 @@ class DynArray;
 template<class T>
 class DynArrayIterator
 {
+private:
+	T* index;
+
 public:
-	T* index = nullptr;
+	DynArrayIterator() : index(nullptr)
+	{
+	}
+
+	DynArrayIterator(T* in) : index(in)
+	{
+	}
 	
 	T& operator*()
 	{
@@ -104,7 +113,7 @@ public:
 template<class T>
 void DynArray<T>::PrintArray()
 {
-	for (int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 	{
 		std::cout << m_data[i] << " ";
 	}
@@ -200,6 +209,7 @@ void DynArray<T>::reserve(size_t newCapacity)
 	}
 	
 	m_capacity = newCapacity;
+
 	if (m_size > m_capacity)
 	{
 		m_size = m_capacity;
@@ -276,32 +286,27 @@ T const& DynArray<T>::operator[](size_t idx) const
 template<class T>
 DynArrayIterator<T> DynArray<T>::begin()
 {
-	DynArrayIterator<T> it;
-	it.index = m_data;
-	return it;
+	return DynArrayIterator<T>(m_data);
 }
 
 template<class T>
 DynArrayIterator<T> DynArray<T>::end()
 {
-	DynArrayIterator<T> it;
-	it.index = m_data + m_size;
-	return it;
+	return DynArrayIterator<T>(m_data + m_size);
 }
 
 template<class T>
 int DynArray<T>::ReturnIndex(iterator const& it)
 {
 	DynArrayIterator<T> iter = this->begin();
-	T* ptr = iter.index;
-	int i = 0;
+	size_t i = 0;
 	for (; i < m_size; i++)
 	{
-		if (ptr == it.index)
+		if (iter == it)
 		{
 			return i;
 		}
-		ptr++;
+		++iter;
 	}
 	return -1;
 }
@@ -309,10 +314,10 @@ int DynArray<T>::ReturnIndex(iterator const& it)
 template<class T>
 void DynArray<T>::Insert(iterator const& it, T const& element)
 {
-	if (m_size == 0 || it.index == nullptr)
+	if (m_size == 0)
 	{
 		m_size += 1;
-		m_capacity += 1;
+		m_capacity = 5;
 		reserve(m_capacity);
 		m_data[0] = element;
 	}
@@ -331,28 +336,34 @@ void DynArray<T>::Insert(iterator const& it, T const& element)
 		}
 		m_data[index] = element;
 	}
+	else
+	{
+		std::cout << "Error\n";
+		exit(1);
+	}
 }
 
 template<class T>
 void DynArray<T>::Erase(iterator const& it)
 {
-	if (m_size == 0 || it.index == nullptr)
+	if (m_size == 0)
 	{
+		std::cout << "Error\n";
 		exit(1);
 	}
 
-	int index = this->ReturnIndex(it);
+	size_t index = this->ReturnIndex(it);
 	
 	if (index < m_size && index >= 0)
 	{
-		for (int i = index; i < m_size - 1; i++)
+		for (size_t i = index; i < m_size - 1; i++)
 		{
 			m_data[i] = m_data[i + 1];
 		}
 		m_data[m_size - 1] = 0;
 
 		m_size -= 1;
-		m_capacity -= 1;
+		m_capacity = m_size < m_capacity / 4 ? m_capacity / 2 : m_capacity + 1;
 		reserve(m_capacity);
 	}
 }
