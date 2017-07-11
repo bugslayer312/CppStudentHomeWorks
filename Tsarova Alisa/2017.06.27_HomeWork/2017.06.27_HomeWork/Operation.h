@@ -19,7 +19,7 @@ public:
 	{
 	}
 
-	std::string GetName()
+	std::string GetName() const
 	{
 		return m_name;
 	}
@@ -65,7 +65,7 @@ public:
 		std::cout << "Please enter right operand: ";
 		std::cin >> rigthOperand;
 
-		std::cout << leftOperand << " - " << rigthOperand << " = " << leftOperand + rigthOperand << std::endl;
+		std::cout << leftOperand << " - " << rigthOperand << " = " << leftOperand - rigthOperand << std::endl;
 	}
 };
 
@@ -86,7 +86,7 @@ public:
 		std::cout << "Please enter right operand: ";
 		std::cin >> rigthOperand;
 
-		std::cout << leftOperand << " * " << rigthOperand << " = " << leftOperand + rigthOperand << std::endl;
+		std::cout << leftOperand << " * " << rigthOperand << " = " << leftOperand * rigthOperand << std::endl;
 	}
 };
 
@@ -116,7 +116,7 @@ public:
 			throw Exception();
 		}
 
-		std::cout << leftOperand << " / " << rigthOperand << " = " << leftOperand + rigthOperand << std::endl;
+		std::cout << leftOperand << " / " << rigthOperand << " = " << leftOperand / rigthOperand << std::endl;
 	}
 };
 
@@ -214,10 +214,11 @@ public:
 
 	void ExecuteOperation(int position)
 	{
-		if (position == 8)
-		{
-			exit(1);
-		}
 		m_operations[position]->Execute();
+	}
+
+	int GetCountOperations() const
+	{
+		return m_operations.size();
 	}
 };
