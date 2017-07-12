@@ -6,9 +6,7 @@ template<class T>
 class DynArrayIterator
 {
 public:
-	T* m_ptr = nullptr;
-
-	DynArrayIterator() = default;
+	T* m_ptr;
 
 	DynArrayIterator(T* ptr) :m_ptr(ptr)
 	{
@@ -302,7 +300,7 @@ void DynArray<T>::insert(iterator const& it, T const& element)
 	}
 	iterator buff = begin();
 	size_t i = 0;
-	while (buff != end())
+	while (buff != end() + 1)
 	{
 		if (buff == it)
 		{
@@ -316,6 +314,7 @@ void DynArray<T>::insert(iterator const& it, T const& element)
 			}
 			m_data[i] = element;
 			m_size++;
+			return;
 		}
 		buff++;
 		i++;

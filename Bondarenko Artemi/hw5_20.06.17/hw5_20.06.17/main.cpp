@@ -29,4 +29,12 @@ void main()
 		std::cout << i << " ";
 	}
 	std::cout << "\n";
+
+	it = d.end();
+	d.insert(it, 0);
+	for (int& i : d)
+	{
+		std::cout << i << " ";
+	}
+	std::cout << "\n";
 }
