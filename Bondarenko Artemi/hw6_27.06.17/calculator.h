@@ -14,15 +14,6 @@ private:
 		new ExponentOperation() };
 
 public:
-	~Calculator()
-	{
-		auto it = m_operations.begin();
-		while (it != m_operations.end())
-		{
-			delete *(it++);
-		}
-	}
-
 	void ShowMenu()
 	{
 		int count = 1;
